@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/phpdave11/gofpdi"
+	gofpdi "github.com/abdullokh-mukhammadjonov/gofpdi-im"
 	"github.com/pkg/errors"
 )
 
@@ -180,7 +180,7 @@ func (gp *GoPdf) SetLineType(linetype string) {
 //	pdf.SetCustomLineType([]float64{0.8, 0.8}, 0)
 //	pdf.Line(50, 200, 550, 200)
 func (gp *GoPdf) SetCustomLineType(dashArray []float64, dashPhase float64) {
-	for i, _ := range dashArray {
+	for i := range dashArray {
 		gp.UnitsToPointsVar(&dashArray[i])
 	}
 	gp.UnitsToPointsVar(&dashPhase)
@@ -2178,6 +2178,15 @@ func (gp *GoPdf) IsCurrFontContainGlyph(r rune) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// This methos returns number of pages based on
+// box type (empty string = "/MediaBox")
+func (gp *GoPdf) GetTemplatePageCount(sourceFile string, box string) int {
+	// Set source file for fpdi
+	gp.fpdi.SetSourceFile(sourceFile)
+
+	return gp.fpdi.GetTemplatePageCountByBox(box)
 }
 
 //tool for validate pdf https://www.pdf-online.com/osa/validate.aspx
